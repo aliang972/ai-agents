@@ -2,15 +2,22 @@
 
 
 def summarize_values(values):
-    """整理普通整数列表；不修改输入。
+    """按首次出现顺序去重、统计频数、收集重复值；不修改输入。
 
-    返回 {"unique": 首次出现顺序的去重列表,
-          "counts": 每个整数的出现次数字典,
-          "repeated": 出现次数大于 1 的整数集合}。
-    空输入返回 {"unique": [], "counts": {}, "repeated": set()}。
-    每次调用产生独立结果，结果中的列表、字典、集合可以单独修改。
+    values 为普通整数列表，可为空，允许零、负数与重复值。
+    返回 {"unique": 列表, "counts": 字典, "repeated": 集合}。
+    每次调用都新建三个容器，调用之间不共享。
     """
-    raise NotImplementedError("请实现 summarize_values")
+    unique = []
+    counts = {}
+    for value in values:
+        if value not in counts:
+            unique.append(value)
+            counts[value] = 1
+        else:
+            counts[value] += 1
+    repeated = {value for value, count in counts.items() if count > 1}
+    return {"unique": unique, "counts": counts, "repeated": repeated}
 
 
 def apply_changes(original, updates, removals):
